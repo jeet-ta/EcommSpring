@@ -2,6 +2,7 @@ package com.example.Ecomm.controller;
 
 import com.example.Ecomm.model.Category;
 import com.example.Ecomm.service.CategoryService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,14 +26,14 @@ public class CategoryController {
 
     //@PostMapping(".category")
     @RequestMapping(value = "/category",method = RequestMethod.POST)
-    public ResponseEntity<String> addCategory(@RequestBody Category category) {
+    public ResponseEntity<String> addCategory(@Valid @RequestBody Category category) {
         categoryService.addCategory(category);
         return new ResponseEntity<>("Category added successfully",HttpStatus.CREATED);
     }
 
     //@DeleteMapping(".category/{categoryId}")
     @RequestMapping(value = "/category/{categoryId}",method = RequestMethod.DELETE)
-        public ResponseEntity<String> deleteCategory (@PathVariable Long categoryId){
+        public ResponseEntity<String> deleteCategory (@Valid @PathVariable Long categoryId){
         try {
             String status = categoryService.deleteCategory(categoryId);
             return new ResponseEntity<>(status, HttpStatus.OK);
@@ -43,7 +44,7 @@ public class CategoryController {
 
     //@PutMapping(".public.categories/{categoryId}")
     @RequestMapping(value = "/category/{categoryId}",method = RequestMethod.PUT)
-    public ResponseEntity<String> updateCategory(@RequestBody Category category,
+    public ResponseEntity<String> updateCategory(@Valid @RequestBody Category category,
                                                  @PathVariable Long categoryId) {
 
         try{

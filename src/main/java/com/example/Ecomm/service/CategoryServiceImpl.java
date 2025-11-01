@@ -1,5 +1,6 @@
 package com.example.Ecomm.service;
 
+import com.example.Ecomm.exception.ResourceNotFoundException;
 import com.example.Ecomm.model.Category;
 import com.example.Ecomm.repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public String addCategory(Category category) {
        // category.setCategoryId(nextID++);
+        Category savedCategory = categoryRepository.findByCategoryName(category);
         categoryRepository.save(category);
         return "Category added successfully";
     }
@@ -38,7 +40,7 @@ public class CategoryServiceImpl implements CategoryService {
       // Optional<Category> categories = categoryRepository.findById(categoryId);
 
         Category savedCategory =  categoryRepository.findById(categoryId).
-                orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource not found"));
+                orElseThrow(() -> new ResourceNotFoundException("Catergory","CategoryId ",categoryId));
         categoryRepository.delete(savedCategory);
 
         return "Category with categoryId: " + categoryId + " deleted successfully !!";
@@ -57,7 +59,7 @@ public class CategoryServiceImpl implements CategoryService {
        // List<Category> categoryList = categoryRepository.findAll();
         // Optional<Category> categories = categoryRepository.findById(categoryId);
         Category savedCategory =  categoryRepository.findById(categoryId).
-                orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource not found"));
+                orElseThrow(() -> new ResourceNotFoundException("Category",category.getCategoryName(),categoryId));
         category.setCategoryId(categoryId);
 
         savedCategory.setCategoryId(categoryId);
